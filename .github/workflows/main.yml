@@ -35,3 +35,10 @@ jobs:
       with:
         name: sdcard.img
         path: build/images/sdcard.img
+
+    # Create release
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: build/images/sdcard.img
