@@ -17,16 +17,16 @@ jobs:
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
-        token: ${{ secrets.CI_TOKEN }}
         submodules: true
+    # Check files
+    - name: List files
+      run: ls -la
+    # Configure
+    - name: Configure
+      run: bash ./br_config.sh
 
-    # Update references
-    - name: Git Submodule Update
-      run: |
-        git pull --recurse-submodules
-        git submodule update --remote --recursive
       # - name: Prepare directory structure
       #   run: mkdir x6100
       # - name: Checkout Buildroot
