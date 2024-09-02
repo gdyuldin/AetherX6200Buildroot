@@ -130,7 +130,7 @@ diff -Naur orig/drivers/gpu/drm/panel/panel-jinglitai-jlt4013a.c my/drivers/gpu/
 +
 +static int st7701s_write_command(struct jlt4013a *ctx, u8 cmd)
 +{
-+	pr_info("Jinglitai JLT4013A: Writing SPI command with value %x\n", cmd);
++	// pr_info("Jinglitai JLT4013A: Writing SPI command with value %x\n", cmd);
 +
 +	gpiod_set_value(ctx->dcx, 0);
 +
@@ -139,7 +139,7 @@ diff -Naur orig/drivers/gpu/drm/panel/panel-jinglitai-jlt4013a.c my/drivers/gpu/
 +
 +static int st7701s_write_data(struct jlt4013a *ctx, u8 cmd)
 +{
-+	pr_info("Jinglitai JLT4013A: Writing SPI data with value %x\n", cmd);
++	// pr_info("Jinglitai JLT4013A: Writing SPI data with value %x\n", cmd);
 +
 +	gpiod_set_value(ctx->dcx, 1);
 +
