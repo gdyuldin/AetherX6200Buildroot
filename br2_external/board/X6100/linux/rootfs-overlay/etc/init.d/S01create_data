@@ -1,0 +1,34 @@
+#!/bin/sh
+
+start() {
+    # Check fat32 not exists
+    parted -m -s /dev/mmcblk0 print | grep fat32
+    retVal=$?
+    if [ $retVal -eq 0 ]; then
+        echo "Fat32 partition already exists"
+        return
+    fi
+    # Get free space info
+    FREE_INFO=$(parted -sm /dev/mmcblk0 print free | tail -n1 | grep free)
+    retVal=$?
+    if [ $retVal -ne 0 ]; then
+        echo "No free space available"
+        return
+    fi
+    FREE_ARR=(${FREE_INFO//:/ })
+    # Create partition
+    parted -m -s -a opt /dev/mmcblk0 mkpart primary fat32 ${FREE_ARR[1]} ${FREE_ARR[2]}
+    # Mount partition
+    mount /dev/mmcblk0p3
+}
+
+
+case "$1" in
+    start)
+        start;;
+    stop)
+        ;;
+    *)
+        echo "Usage: $0 {start}"
+    exit 1
+esac
