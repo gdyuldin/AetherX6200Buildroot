@@ -47,8 +47,8 @@ jobs:
     - name: 'Upload image'
       uses: actions/upload-artifact@v4
       with:
-        name: sdcard.img.zip
-        path: build/images/sdcard.img.zip
+        name: sdcard.img
+        path: build/images/sdcard.img
 
     # Create release
     - name: Release
