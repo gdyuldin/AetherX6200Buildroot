@@ -40,8 +40,8 @@ jobs:
     # Compress image
     - name: Compress image
       run: |
-      cd build/images
-      zip sdcard.img.zip sdcard.img
+        cd build/images
+        zip sdcard.img.zip sdcard.img
 
     # Upload image
     - name: 'Upload image'
