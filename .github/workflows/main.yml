@@ -20,6 +20,14 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: true
+
+    - name: Cache ccache
+      id: cache-ccache
+      uses: actions/cache@v4
+      with:
+        path: ~/.buildroot-ccache
+        key: ${{ runner.os }}-ccache
+
     # Configure
     - name: Configure
       run: bash ./br_config.sh
@@ -29,16 +37,22 @@ jobs:
       run: |
         cd build && make
 
+    # Compress image
+    - name: Compress image
+      run: |
+      cd build/images
+      zip sdcard.img.zip sdcard.img
+
     # Upload image
     - name: 'Upload image'
       uses: actions/upload-artifact@v4
       with:
-        name: sdcard.img
-        path: build/images/sdcard.img
+        name: sdcard.img.zip
+        path: build/images/sdcard.img.zip
 
     # Create release
     - name: Release
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: build/images/sdcard.img
+        files: build/images/sdcard.img.zip
