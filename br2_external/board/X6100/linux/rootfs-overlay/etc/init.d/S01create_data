@@ -18,6 +18,9 @@ start() {
     FREE_ARR=(${FREE_INFO//:/ })
     # Create partition
     parted -m -s -a opt /dev/mmcblk0 mkpart primary fat32 ${FREE_ARR[1]} ${FREE_ARR[2]}
+    partprobe /dev/mmcblk0
+    # Format partition
+    mkfs -t vfat -n DATA /dev/mmcblk0p3
     # Mount partition
     mount /dev/mmcblk0p3
 }
