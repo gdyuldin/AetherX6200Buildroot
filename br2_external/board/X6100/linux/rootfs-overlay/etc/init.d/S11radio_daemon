@@ -27,7 +27,9 @@ case "$1" in
         ;;
     stop)
         # deinit gpios
-        if [ -d ${_KBLDEV} ]; then
+        if [ -d ${_KBLDEV} ]; then        # create DNS soft link
+        ln -sf /run/NetworkManager/resolv.conf /etc/resolv.conf
+
             echo 1    > ${_KBLDEV}/value
             echo "in" > ${_KBLDEV}/direction
             echo ${_KBLGPIO}  > /sys/class/gpio/unexport

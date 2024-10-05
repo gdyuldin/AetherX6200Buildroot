@@ -1,5 +1,6 @@
 config BR2_PACKAGE_RHVOICE
 	bool "RHVoice"
+	select BR2_PACKAGE_PULSEAUDIO
 	help
 	  RHVoice is a free and open-source speech synthesizer.
 
