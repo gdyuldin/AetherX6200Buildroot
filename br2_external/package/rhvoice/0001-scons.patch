@@ -1,6 +1,48 @@
---- a/SConstruct	2023-11-16 12:42:03.520528233 +0300
-+++ b/SConstruct	2023-11-16 12:43:09.288534640 +0300
-@@ -218,6 +218,14 @@
+diff --git a/SConstruct b/SConstruct
+index 8a3a56b..5224cf9 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -36,14 +36,16 @@ def passthru(env, cmd, unique=False):
+     return cmd.rstrip()
+
+ def CheckPKGConfig(context):
++    pkg_config = context.env.get('PKG_CONFIG', 'pkg-config')
+     context.Message("Checking for pkg-config... ")
+-    result=context.TryAction("pkg-config --version")[0]
++    result=context.TryAction("{} --version".format(pkg_config))[0]
+     context.Result(result)
+     return result
+
+ def CheckPKG(context,name):
++    pkg_config = context.env.get('PKG_CONFIG', 'pkg-config')
+     context.Message("Checking for {}... ".format(name))
+-    result=context.TryAction("pkg-config --exists '{}'".format(name))[0]
++    result=context.TryAction("{} --exists '{}'".format(pkg_config, name))[0]
+     context.Result(result)
+     return result
+
+@@ -95,8 +97,9 @@ def CheckWiX(context):
+
+ def get_spd_module_dir():
+     env = Environment()
++    pkg_config = os.environ.get("PKG_CONFIG", "pkg-config")
+     try:
+-        return env.ParseConfig("pkg-config speech-dispatcher --variable=modulebindir", passthru)
++        return env.ParseConfig("{} speech-dispatcher --variable=modulebindir".format(pkg_config), passthru)
+     except:
+         return False
+
+@@ -111,7 +114,8 @@ def CheckSpdVersion(ctx):
+     if ver is not None:
+         ctx.Result(ver)
+         return ver
+-    res, ver=ctx.TryAction("pkg-config --modversion speech-dispatcher > $TARGET")
++    pkg_config = ctx.env.get('PKG_CONFIG', 'pkg-config')
++    res, ver=ctx.TryAction("{} --modversion speech-dispatcher > $TARGET".format(pkg_config))
+     ver=ver.strip()
+     if not res:
+         src='#include <stdio.h>\n#include <speech-dispatcher/libspeechd_version.h>\nint main() {\nint major=LIBSPEECHD_MAJOR_VERSION;\nint minor=LIBSPEECHD_MINOR_VERSION;\nprintf("%d.%d",major,minor);\nreturn 0;}'
+@@ -218,6 +222,15 @@ def create_base_env(user_vars):
          env.Append(CPPDEFINES=("NOMINMAX",1))
      env["libcore"]="RHVoice_core"
      env["libaudio"]="RHVoice_audio"
@@ -11,7 +53,50 @@
 +        env.Replace(CC = cross + 'gcc')
 +        env.Replace(CXX = cross + 'g++')
 +        env.Replace(LD = cross + 'ld')
++        env.Replace(PKG_CONFIG = os.environ['PKG_CONFIG'])
 +
      return env
- 
+
  def display_help(env,vars):
+diff --git a/src/audio/SConscript b/src/audio/SConscript
+index cbb57fa..7aeed56 100644
+--- a/src/audio/SConscript
++++ b/src/audio/SConscript
+@@ -20,19 +20,20 @@ Import("env","libcore")
+ local_env=env.Clone()
+ local_env["libversion"]="2.0.0"
+ local_env["liblevel"]=1
++pkg_config = local_env.get("PKG_CONFIG", "pkg-config")
+ src=["audio.cpp", "file_playback_stream_impl.cpp", "playback_stream.cpp"]
+ if "libao" in local_env["audio_libs"]:
+ 	src.append("libao.cpp")
+ 	local_env.Append(CPPDEFINES=("WITH_LIBAO","1"))
+-	local_env.MergeFlags(["!pkg-config --cflags --libs ao"])
++	local_env.MergeFlags(["!{} --cflags --libs ao".format(pkg_config)])
+ if "pulse" in local_env["audio_libs"]:
+ 	src.append("pulse.cpp")
+ 	local_env.Append(CPPDEFINES=("WITH_PULSE","1"))
+-	local_env.MergeFlags(["!pkg-config --cflags --libs libpulse-simple"])
++	local_env.MergeFlags(["!{} --cflags --libs libpulse-simple".format(pkg_config)])
+ if "portaudio" in local_env["audio_libs"]:
+ 	src.append("portaudio.cpp")
+ 	local_env.Append(CPPDEFINES=("WITH_PORTAUDIO","1"))
+-	local_env.MergeFlags(["!pkg-config --cflags --libs portaudio-2.0"])
++	local_env.MergeFlags(["!{} --cflags --libs portaudio-2.0".format(pkg_config)])
+ local_env.Prepend(LIBS=local_env["libcore"])
+ libaudio=local_env.BuildLibrary(local_env["libaudio"],src)
+ local_env.Depends(libaudio,libcore)
+diff --git a/src/service/SConscript b/src/service/SConscript
+index 1b9b5f9..db7131a 100644
+--- a/src/service/SConscript
++++ b/src/service/SConscript
+@@ -18,7 +18,8 @@ import os.path
+
+ Import("env","libcore")
+ local_env=env.Clone()
+-local_env.MergeFlags(["!pkg-config --cflags --libs giomm-2.4"])
++pkg_config = local_env.get("PKG_CONFIG", "pkg-config")
++local_env.MergeFlags(["!{} --cflags --libs giomm-2.4".format(pkg_config)])
+ local_env.Prepend(LIBS=local_env["libcore"])
+
+ service=local_env.Program("RHVoice-service",["service.cpp","common.cpp"])
