@@ -1,0 +1,5 @@
+config BR2_PACKAGE_FT8LIB
+	bool "ft8lib"
+	depends on BR2_LINUX_KERNEL
+	help
+	  FT8 lib package to encode/decode FT8/FT4
