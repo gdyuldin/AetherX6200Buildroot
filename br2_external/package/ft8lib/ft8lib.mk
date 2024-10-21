@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FT8LIB_VERSION = 76583b242c38c2e0ea774708eae621699f2c6f5d
+FT8LIB_VERSION = c0263d75223755020be58714af5be10feb710194
 FT8LIB_SITE = https://github.com/gdyuldin/ft8_lib
 FT8LIB_SITE_METHOD = git
 FT8LIB_LICENSE = MIT
@@ -16,6 +16,7 @@ define FT8LIB_BUILD_CMDS
 endef
 
 define FT8LIB_INSTALL_STAGING_CMDS
+    mkdir -p $(STAGING_DIR)/usr/include/ft8lib/
     $(INSTALL) -D -m 0755 $(@D)/.build/libft8.so $(STAGING_DIR)/usr/lib
     $(INSTALL) -D -m 0644 $(@D)/ft8/*.h $(STAGING_DIR)/usr/include/ft8lib/
 endef
