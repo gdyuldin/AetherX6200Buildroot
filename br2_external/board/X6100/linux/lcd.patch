@@ -218,39 +218,39 @@ diff -Naur orig/drivers/gpu/drm/panel/panel-jinglitai-jlt4013a.c my/drivers/gpu/
 +
 +	ST7701S_TRY(ret, st7701s_write_command(ctx, ST7701S_PVGAMCTRL));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x40));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x01));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x46));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xC9));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x90));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x0D));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x13));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x09));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x05));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x09));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x09));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x1B));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x0F));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x04));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x00));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x07));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x15));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x12));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x4C));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x10));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xC8));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x07));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x1C));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x04));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x52));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x0F));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xDF));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x26));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xCF));
 +
 +	ST7701S_TRY(ret, st7701s_write_command(ctx, ST7701S_NVGAMCTRL));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x40));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x02));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x86));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x0D));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x13));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x09));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x05));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x09));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x09));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x1F));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xC9));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xCF));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x0C));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x90));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x04));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x00));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x07));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x15));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x12));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x15));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x19));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x08));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x1B));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x06));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x55));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x13));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x62));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xE7));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0xCF));
 +
 +	/* BK1 */
 +
@@ -262,7 +262,7 @@ diff -Naur orig/drivers/gpu/drm/panel/panel-jinglitai-jlt4013a.c my/drivers/gpu/
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x11));
 +
 +	ST7701S_TRY(ret, st7701s_write_command(ctx, ST7701S_VRHS));
-+	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x50));
++	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x5B));
 +
 +	ST7701S_TRY(ret, st7701s_write_command(ctx, ST7701S_VCOM));
 +	ST7701S_TRY(ret, st7701s_write_data(ctx, 0x68));
