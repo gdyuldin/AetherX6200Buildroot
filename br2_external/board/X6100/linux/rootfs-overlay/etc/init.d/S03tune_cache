@@ -1,0 +1,16 @@
+#!/bin/sh
+
+start() {
+    sysctl -w vm.vfs_cache_pressure=50
+    sysctl -w vm.swappiness=1
+}
+
+case "$1" in
+    start)
+        start;;
+    stop)
+        ;;
+    *)
+        echo "Usage: $0 {start}"
+    exit 1
+esac
