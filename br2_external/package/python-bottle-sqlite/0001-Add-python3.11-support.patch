@@ -1,0 +1,27 @@
+From 3af1bf4f78cc8b61db16e74cfe2ecf373bd17da2 Mon Sep 17 00:00:00 2001
+From: Georgy Dyuldin <g.dyuldin@gmail.com>
+Date: Wed, 13 Nov 2024 09:59:53 +0300
+Subject: [PATCH] Add python3.11 support
+
+---
+ bottle_sqlite.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/bottle_sqlite.py b/bottle_sqlite.py
+index 7fa0e7b..bee55e6 100755
+--- a/bottle_sqlite.py
++++ b/bottle_sqlite.py
+@@ -36,6 +36,10 @@ import sqlite3
+ import inspect
+ import bottle
+ 
++# For Python3.11
++if not hasattr(inspect, 'getargspec'):
++    inspect.getargspec = inspect.getfullargspec
++
+ # PluginError is defined to bottle >= 0.10
+ if not hasattr(bottle, 'PluginError'):
+     class PluginError(bottle.BottleException):
+-- 
+2.43.0
+
