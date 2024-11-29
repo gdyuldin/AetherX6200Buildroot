@@ -9,8 +9,8 @@ ARGS="--db /mnt/params.db --host 0.0.0.0 --port 80 --filebrowser-path /mnt/"
 
 start() {
 	printf "Starting $DAEMON: "
-	[ ! -f /mnt/params.db ] && cp /usr/share/x6100/params.default.db /mnt/params.db
-	# shellcheck disable=SC2086 # we need the word splitting
+	# Sleep for finishing migration
+	sleep 3
 	start-stop-daemon -S -b -q -m -p "$PIDFILE" -x "/usr/bin/$DAEMON" -- $ARGS
 	status=$?
 	if [ "$status" -eq 0 ]; then
