@@ -6,4 +6,9 @@ tmpfs		/dev/shm	tmpfs	mode=0777	0	0
 tmpfs		/tmp		tmpfs	mode=1777	0	0
 tmpfs		/run		tmpfs	mode=0755,nosuid,nodev	0	0
 sysfs		/sys		sysfs	defaults	0	0
-/dev/mmcblk0p3	/mnt		vfat	rw		0	0
+/dev/mmcblk0p3	/overlay	ext4	rw		0	0
+/dev/mmcblk0p4	/mnt		vfat	rw		0	0
+
+overlay /root overlay noauto,lowerdir=/root,upperdir=/overlay/upper/root,workdir=/overlay/work/root	0	0
+overlay /etc/NetworkManager/system-connections overlay noauto,lowerdir=/etc/NetworkManager/system-connections,upperdir=/overlay/upper/system-connections,workdir=/overlay/work/system-connections	0	0
+overlay /etc/ssh overlay noauto,lowerdir=/etc/ssh,upperdir=/overlay/upper/etc_ssh,workdir=/overlay/work/etc_ssh	0	0

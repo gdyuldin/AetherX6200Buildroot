@@ -1,0 +1,56 @@
+#!/bin/sh
+
+start() {
+    BASE_UPPER="/overlay/upper"
+    BASE_WORK="/overlay/work"
+    if [ ! -d "$BASE_UPPER" ]; then
+        mkdir -p "$BASE_UPPER"
+    fi
+    if [ ! -d "$BASE_WORK" ]; then
+        mkdir -p "$BASE_WORK"
+    fi
+
+    # Mount /root
+    UPPER="$BASE_UPPER/root"
+    WORK="$BASE_WORK/root"
+    if [ ! -d "$UPPER" ]; then
+        mkdir -p "$UPPER"
+    fi
+    if [ ! -d "$WORK" ]; then
+        mkdir -p "$WORK"
+    fi
+    mount /root
+
+    # Mount /etc/NetworkManager/system-connections
+    UPPER="$BASE_UPPER/system-connections"
+    WORK="$BASE_WORK/system-connections"
+    if [ ! -d "$UPPER" ]; then
+        mkdir -p "$UPPER"
+    fi
+    if [ ! -d "$WORK" ]; then
+        mkdir -p "$WORK"
+    fi
+    mount /etc/NetworkManager/system-connections
+
+    # Mount /etc/ssh
+    UPPER="$BASE_UPPER/etc_ssh"
+    WORK="$BASE_WORK/etc_ssh"
+    if [ ! -d "$UPPER" ]; then
+        mkdir -p "$UPPER"
+    fi
+    if [ ! -d "$WORK" ]; then
+        mkdir -p "$WORK"
+    fi
+    mount /etc/ssh
+}
+
+
+case "$1" in
+    start)
+        start;;
+    stop)
+        ;;
+    *)
+        echo "Usage: $0 {start}"
+    exit 1
+esac
