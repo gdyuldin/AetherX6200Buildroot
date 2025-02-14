@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# Restore and backup configs
+#
+
+set -e
+
+backups="
+/etc/NetworkManager/system-connections/*	network_manager.zip
+/etc/ssh/*_key*					ssh_host_keys.zip
+/root/.ssh/*					root_ssh.zip
+"
+backup_dir="/mnt/backups"
+
+
+# we have to use a Python script here since zip is not installed
+read -d '' zipscript << 'EOF' || true
+import os
+import sys
+from zipfile import ZipFile
+
+source_dir = sys.argv[1]
+zipfile_full_path = sys.argv[2]
+
+with ZipFile(zipfile_full_path, 'w', strict_timestamps=False) as zip:
+    for line in sys.stdin:
+        file = line.rstrip('\\n')
+        zip.write(os.path.join(source_dir, file), file)
+EOF
+
+tab="	"
+backup() {
+    printf "Backup configs: "
+    echo "$backups" | sed "s/^[ $tab]*//; s/[ $tab]*\$//; /^$/d" | while read bkp; do
+        source="${bkp%%$tab*}"
+        destination="${bkp##*$tab}"
+        source_dir="${source%/*}"
+        source_pattern="${source##*/}"
+        files="$({ cd "$source_dir" && ls -1 $source_pattern; } 2> /dev/null || true)"
+        # skip backup if there are no files to backup
+        [ -n "$files" ] || continue
+        # make backup directory if it doesn't exist
+        [ -d "$backup_dir" ] || mkdir "$backup_dir"
+        zipfile_full_path="$backup_dir/$destination"
+        echo "$files" | python -c "$zipscript" "$source_dir" "$zipfile_full_path"
+    done
+    echo "OK"
+}
+
+restore() {
+    printf "Restore configs: "
+    echo "$backups" | sed "s/^[ $tab]*//; s/[ $tab]*\$//; /^$/d" | while read bkp; do
+        source="${bkp%%$tab*}"
+        destination="${bkp##*$tab}"
+        source_dir="${source%/*}"
+        source_pattern="${source##*/}"
+        files="$({ cd "$source_dir" && ls -1 $source_pattern; } 2> /dev/null || true)"
+        # skip restore if there are already matching files
+        [ -z "$files" ] || continue
+        zipfile_full_path="$backup_dir/$destination"
+        [ -f "$zipfile_full_path" ] || continue
+        unzip -q "$zipfile_full_path" -d "$source_dir"
+    done
+    echo "OK"
+}
+
+case "$1" in
+  start)
+    restore
+    ;;
+  stop)
+    backup
+    ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+esac
+
+exit $?
