@@ -1,7 +1,7 @@
 /dts-v1/;
 
 /*
- * Decompiled, and cleaned up device tree file for the X6100.
+ * Decompiled, and cleaned up device tree file for the X6200.
  * Thanks <apritzel> from #linux-sunxi @ OFTC (https://oftc.net/)
  */
 
@@ -11,8 +11,8 @@
 #include <dt-bindings/input/input.h>
 
 / {
-	model = "XIEGU Tech X6100 HF+6m Transceiver";
-	compatible = "xiegu,x6100", "allwinner,sun8i-r16";
+	model = "XIEGU Tech X6200 Transceiver";
+	compatible = "xiegu,x6200", "allwinner,sun8i-r16";
 
 	aliases {
 		serial0 = "/soc/serial@1c28000";
@@ -41,6 +41,11 @@
 		reset-gpios = <&pio 2 0 GPIO_ACTIVE_LOW>;	/* PC0 (?) */
 	};
 
+	mmc2_pwrseq: mmc2-pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&pio 2 0x10 GPIO_ACTIVE_LOW>;
+	};
+
 	reg_usb0_vbus: usb0_vbus {
 		compatible = "regulator-fixed";
 		regulator-name = "usb0_vbus";
@@ -57,7 +62,7 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-boot-on;
 		enable-active-high;
-		gpio = <&pio 03 12 GPIO_ACTIVE_HIGH>;
+		gpio = <&r_pio 0 4 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
@@ -181,7 +186,7 @@
 		pinctrl-0 = <&rotary_2_pins>;
 	};
 
-	rotary3 {
+	rotary2 {
 		compatible = "rotary-encoder";
 		gpios = <&pio 1 7 GPIO_ACTIVE_LOW>, <&pio 1 5 GPIO_ACTIVE_LOW>;
 		linux,axis = <2>;
@@ -189,6 +194,16 @@
 		rotary-encoder,relative-axis;
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_3_pins>;
+	};
+
+	rotary3 {
+		compatible = "rotary-encoder";
+		gpios = <&pio 6 1 GPIO_ACTIVE_LOW>, <&pio 6 0 GPIO_ACTIVE_LOW>;
+		linux,axis = <3>;
+		rotary-encoder,encoding = "gray";
+		rotary-encoder,relative-axis;
+		pinctrl-names = "default";
+		pinctrl-0 = <&rotary_4_pins>;
 	};
 };
 
@@ -265,13 +280,7 @@
 };
 
 &mmc1 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&mmc1_pg_pins>;
-	vmmc-supply = <&reg_aldo1>;
-	mmc-pwrseq = <&mmc1_pwrseq>;
-	bus-width = <4>;
-	non-removable;
+	status = "disabled";
 };
 
 &mmc2 {
@@ -279,6 +288,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc2_8bit_pins>;
 	vmmc-supply = <&reg_dcdc1>;
+	mmc-pwrseq = <&mmc2_pwrseq>;
 	bus-width = <8>;
 	non-removable;
 	cap-mmc-hw-reset;
@@ -329,6 +339,12 @@
 
 	rotary_3_pins: rotary-3-pins {
 		pins = "PB5", "PB7";
+		function = "gpio_in";
+		bias-pull-up;
+	};
+
+	rotary_4_pins: rotary-4-pins {
+		pins = "PG0", "PG1";
 		function = "gpio_in";
 		bias-pull-up;
 	};
