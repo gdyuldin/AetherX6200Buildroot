@@ -83,6 +83,7 @@
 	backlight: backlight {
 		compatible = "pwm-backlight";
 		power-supply = <&reg_vcc5v0>;
+		// perhaps - replace with original 50000
 		pwms = <&pwm 0 10000000 0>;
 		brightness-levels = <0 10 20 30 40 50 60 70 80 90 100>;
 		default-brightness-level = <5>;
@@ -226,50 +227,42 @@
 &i2c0 {
     status = "okay";
 
-    compatible = "i2c-gpio";
-    scl-gpios = <&pio 7 2 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-    sda-gpios = <&pio 7 3 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-    i2c-gpio,sda-open-drain;
-    i2c-gpio,scl-open-drain;
-    i2c-gpio,delay-us = <2>;
+    compatible = "allwinner,sun6i-a31-i2c";
 
-    /delete-property/ reg;
-    /delete-property/ interrupts;
-    /delete-property/ clocks;
-    /delete-property/ resets;
+	reg = <0x1c2ac00 0x400>;
+	interrupts = <GIC_SPI 0x06 IRQ_TYPE_LEVEL_HIGH>;
+	clocks = <&ccu CLK_BUS_I2C0>;
+	// clock-frequency = <100000>;
+	resets = <&ccu RST_BUS_I2C0>;
 };
 
 &i2c0_pins {
-    function = "gpio_out";
+    function = "i2c0";
 };
 
 &i2c1 {
 	status = "okay";
 
-    compatible = "i2c-gpio";
-    scl-gpios = <&pio 7 4 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-    sda-gpios = <&pio 7 5 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-    i2c-gpio,sda-open-drain;
-    i2c-gpio,scl-open-drain;
-    i2c-gpio,delay-us = <2>;
+    compatible = "allwinner,sun6i-a31-i2c";
 
-    /delete-property/ reg;
-    /delete-property/ interrupts;
-    /delete-property/ clocks;
-    /delete-property/ resets;
+	reg = <0x1c2b000 0x400>;
+	interrupts = <GIC_SPI 0x07 IRQ_TYPE_LEVEL_HIGH>;
+	clocks = <&ccu CLK_BUS_I2C1>;
+	// clock-frequency = <100000>;
+	resets = <&ccu RST_BUS_I2C1>;
 
 	rtc@51 {
 		compatible = "nxp,pcf8563";
 		reg = <0x51>;
 		interrupt-parent = <&pio>;
-		interrupts = <6 13 0x02>;			/* PG13 */
+		interrupts = <6 13 IRQ_TYPE_EDGE_FALLING>;			/* PG13 */
 		interrupt-names = "irq";
 		irq-gpios = <&pio 6 13 GPIO_ACTIVE_HIGH>;
 	};
 };
 
 &i2c1_pins {
-    function = "gpio_out";
+    function = "i2c1";
 };
 
 &mmc0 {
