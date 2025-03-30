@@ -16,6 +16,8 @@
 
 	aliases {
 		serial0 = "/soc/serial@1c28000";
+		mmc0 = &mmc0;
+		mmc2 = &mmc2;
 	};
 
 	chosen {
@@ -167,9 +169,10 @@
 	};
 
 	rotary0 {
+		// Main
 		compatible = "rotary-encoder";
-		gpios = <&pio 1 3 GPIO_ACTIVE_LOW>,	/* PB3 */
-			<&pio 1 2 GPIO_ACTIVE_LOW>;	/* PB2 */
+		gpios = <&pio 1 2 GPIO_ACTIVE_LOW>,	/* PB2 */
+			<&pio 1 3 GPIO_ACTIVE_LOW>;	/* PB3 */
 		linux,axis = <0>;
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
@@ -178,6 +181,7 @@
 	};
 
 	rotary1 {
+		// VOL
 		compatible = "rotary-encoder";
 		gpios = <&pio 1 6 GPIO_ACTIVE_LOW>, <&pio 1 4 GPIO_ACTIVE_LOW>;
 		linux,axis = <1>;
@@ -188,21 +192,25 @@
 	};
 
 	rotary2 {
+		// MFK outer
 		compatible = "rotary-encoder";
-		gpios = <&pio 1 7 GPIO_ACTIVE_LOW>, <&pio 1 5 GPIO_ACTIVE_LOW>;
+		gpios = <&pio 1 5 GPIO_ACTIVE_LOW>, <&pio 1 7 GPIO_ACTIVE_LOW>;
 		linux,axis = <2>;
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
+		rotary-encoder,steps-per-period = <2>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_3_pins>;
 	};
 
 	rotary3 {
+		// MFK inner
 		compatible = "rotary-encoder";
-		gpios = <&pio 6 1 GPIO_ACTIVE_LOW>, <&pio 6 0 GPIO_ACTIVE_LOW>;
+		gpios = <&pio 6 0 GPIO_ACTIVE_LOW>, <&pio 6 1 GPIO_ACTIVE_LOW>;
 		linux,axis = <3>;
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
+		rotary-encoder,steps-per-period = <2>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_4_pins>;
 	};

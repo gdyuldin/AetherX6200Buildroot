@@ -7,7 +7,9 @@ case "$1" in
         # show power on wellcome screen
         ;;
     stop)
-        # show power off goodbye screen
+        # Turn off BASE board
+        stty -F /dev/ttyS1 1152000
+        echo s > /dev/ttyS1
         ;;
     *)
         echo "Usage: $0 {start|stop}"
