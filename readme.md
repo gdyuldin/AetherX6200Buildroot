@@ -1,6 +1,6 @@
-# Aether X6100
+# Aether X6200
 
-A project to build a Linux kernel and OS for the Xiegu X6100 without having to
+A project to build a Linux kernel and OS for the Xiegu X6200 without having to
 copy files from the vendor's kernel.
 
 ## Building

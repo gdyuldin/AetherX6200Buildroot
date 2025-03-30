@@ -1,5 +1,5 @@
-source "$BR2_EXTERNAL_X6200_PATH/package/aether-x6100-control/Config.in"
-source "$BR2_EXTERNAL_X6200_PATH/package/x6100-gui/Config.in"
+source "$BR2_EXTERNAL_X6200_PATH/package/aether-x6200-control/Config.in"
+source "$BR2_EXTERNAL_X6200_PATH/package/x6200-gui/Config.in"
 source "$BR2_EXTERNAL_X6200_PATH/package/rhvoice/Config.in"
 source "$BR2_EXTERNAL_X6200_PATH/package/ft8lib/Config.in"
 source "$BR2_EXTERNAL_X6200_PATH/package/x6100-webserver/Config.in"
